@@ -33,6 +33,42 @@ async function run(){
             res.send(inventory);
         })
 
+        //update_Quantity
+        app.put('/inventory/:id', async (req, res)=>{
+            const id = req.params.id;
+            const updateQuantity = req.body;
+            const filter = {_id:ObjectID(id)};
+            const options = {upsert: true}
+            const updatedDoc ={
+                $set: {
+                    quantity: updateQuantity.newQuantity
+                }
+            };
+            const result = await inventoryCollection.updateOne(filter, updatedDoc, options);
+
+        })
+
+        //delivery_product
+
+        app.get('/delivery', async (req, res) => {
+            res.send('hello')
+        })
+
+        app.put('/delivery/:id', async (req, res) => {
+            const id = req.params.id;
+            const updateQuantity = req.body;
+            const delivery = updateQuantity.quantity - 1;
+            const filter = { _id: ObjectID(id) };
+            const options = { upsert: true }
+            const updatedDoc = {
+                $set: {
+                    quantity: delivery
+                }
+            };
+            const result = await inventoryCollection.updateOne(filter, updatedDoc, options);
+
+        })
+
     }
     finally{
 

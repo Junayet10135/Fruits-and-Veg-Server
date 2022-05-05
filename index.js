@@ -33,6 +33,7 @@ async function run(){
             res.send(inventory);
         })
 
+
         //update_Quantity
         app.put('/inventory/:id', async (req, res)=>{
             const id = req.params.id;
@@ -66,6 +67,24 @@ async function run(){
                 }
             };
             const result = await inventoryCollection.updateOne(filter, updatedDoc, options);
+
+        })
+
+        //Add Product
+
+        app.post('/inventory', async (req, res) => {
+            const newProduct = req.body;
+            const result = await inventoryCollection.insertOne(newProduct);
+            res.send(result);
+        })
+
+        //delete product
+
+        app.delete('/inventory/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectID(id) };
+            const result = await inventoryCollection.deleteOne(query);
+            res.send(result);
 
         })
 

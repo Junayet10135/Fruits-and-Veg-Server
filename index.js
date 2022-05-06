@@ -19,6 +19,7 @@ async function run(){
         await client.connect();
         const inventoryCollection = client.db('fruitAndVeg').collection('inventory');
         const upcomingCollection = client.db('fruitAndVeg').collection('upcoming');
+        const finishingCollection = client.db('fruitAndVeg').collection('finishing');
 
         app.get('/inventory', async (req, res)=>{
             const query = {};
@@ -95,6 +96,14 @@ async function run(){
             const cursor = upcomingCollection.find(query);
             const upcoming = await cursor.toArray();
             res.send(upcoming);
+        })
+
+        //Extra section 2 Will be Finished Soon
+        app.get('/finishing', async (req, res) => {
+            const query = {};
+            const cursor = finishingCollection.find(query);
+            const finishing = await cursor.toArray();
+            res.send(finishing);
         })
 
     }

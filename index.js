@@ -18,6 +18,7 @@ async function run(){
     try{
         await client.connect();
         const inventoryCollection = client.db('fruitAndVeg').collection('inventory');
+        const upcomingCollection = client.db('fruitAndVeg').collection('upcoming');
 
         app.get('/inventory', async (req, res)=>{
             const query = {};
@@ -86,6 +87,14 @@ async function run(){
             const result = await inventoryCollection.deleteOne(query);
             res.send(result);
 
+        })
+
+        //Extra section 1 upComing
+        app.get('/upcoming', async (req, res) => {
+            const query = {};
+            const cursor = upcomingCollection.find(query);
+            const upcoming = await cursor.toArray();
+            res.send(upcoming);
         })
 
     }

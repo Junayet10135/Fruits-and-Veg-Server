@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
 require('dotenv').config()
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const { ObjectID } = require('bson');
@@ -20,6 +21,18 @@ async function run(){
         const inventoryCollection = client.db('fruitAndVeg').collection('inventory');
         const upcomingCollection = client.db('fruitAndVeg').collection('upcoming');
         const finishingCollection = client.db('fruitAndVeg').collection('finishing');
+
+
+        //Auth
+        app.post('/login', async (req, res) => {
+            const user = req.body;
+            const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
+                expiresIn: '1d'
+            });
+            res.send({ accessToken });
+        })
+
+        //Inventory API'
 
         app.get('/inventory', async (req, res)=>{
             const query = {};
